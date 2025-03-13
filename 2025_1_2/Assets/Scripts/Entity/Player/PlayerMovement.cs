@@ -13,14 +13,11 @@ public class PlayerMovement : Player
 
     public void OnMove()
     {
-
         Vector3 moveDir = transform.forward * _vAxis + transform.right * _hAxis;
         moveDir.Normalize();
 
         Rigid.velocity = new Vector3(moveDir.x * _moveSpeed, Rigid.velocity.y, moveDir.z * _moveSpeed);
 
         if (_hAxis == 0 && _vAxis == 0) Rigid.velocity = Vector3.zero;
-
-        Debug.Log(Rigid.velocity);
     }
 }

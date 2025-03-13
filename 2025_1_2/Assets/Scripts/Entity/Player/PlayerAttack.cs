@@ -16,7 +16,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !_isAttacking)
+        if (Input.GetMouseButtonDown(Define.Keys.MouseLeftClick) && !_isAttacking)
         {
             StartCoroutine(SetAttackMove());
         }
@@ -24,9 +24,9 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator SetAttackMove()
     {
-        _isAttacking = true; // 공격 시작
+        _isAttacking = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
         Quaternion startRot = _arm.transform.localRotation;
         Quaternion attackRot1 = Quaternion.Euler(-20, 0, 0) * startRot;
