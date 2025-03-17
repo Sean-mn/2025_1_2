@@ -6,6 +6,7 @@ public class Define
     {
         public static readonly int MouseLeftClick = 0;
         public static readonly KeyCode TurnHandLight = KeyCode.R;
+        public static readonly KeyCode OpenInventory = KeyCode.Tab;
     }
     
     public static class Tags

@@ -9,8 +9,9 @@ public class Inventory : MonoBehaviour
     public const float MaxInventoryWeight = 450f;
 
     [Header("Currnet Max Value")]
-    [SerializeField] private float _currentMaxInventoryWeight;
     [SerializeField] private int _currentMaxInventorySize;
+    [SerializeField] private float _currentMaxInventoryWeight;
+
     public float CurrnetMaxInventoryWeight
     {
         get => _currentMaxInventoryWeight;
@@ -36,6 +37,8 @@ public class Inventory : MonoBehaviour
         get => _currentInventoryWeight;
         set => _currentInventoryWeight = Mathf.Clamp(value, 0, _currentMaxInventoryWeight);
     }
+
+    [SerializeField] private UI_Inventory _InventoryUI;
 
     public void AddItem(Item item)
     {
@@ -66,6 +69,7 @@ public class Inventory : MonoBehaviour
 
         // 무게 추가
         CurrentInventoryWeight += itemWeight;
+        _InventoryUI?.SetInventoryWeighText();
     }
 
     public void RemoveItem(Item item)
@@ -83,6 +87,7 @@ public class Inventory : MonoBehaviour
 
             // 무게 감소
             CurrentInventoryWeight -= item.ItemWeight;
+            _InventoryUI?.SetInventoryWeighText();
         }
     }
 
@@ -90,12 +95,10 @@ public class Inventory : MonoBehaviour
     {
         CurrentInventorySize = size;
     }
-
     public  void SetMaxInventorySize(int size)
     {
         _currentMaxInventorySize = Mathf.Max(size, 1); // 최소 1 이상의 값으로 설정
     }
-
     public  void SetMaxInventoryWeight(float weight)
     {
         _currentMaxInventoryWeight = Mathf.Max(weight, 1f); // 최소 1 이상의 값으로 설정
