@@ -1,7 +1,7 @@
 using System.Threading;
 using UnityEngine;
 
-public class PlayerRotate : Player
+public class PlayerRotate : MonoBehaviour
 {
     [SerializeField, Header("Stat")]
     private float _rotateSpeed;
@@ -9,7 +9,7 @@ public class PlayerRotate : Player
     private float _mouseX;
     private float _mouseY;
 
-    protected override void OnUpdate()
+    private void Update()
     {
         OnRotate();
     }

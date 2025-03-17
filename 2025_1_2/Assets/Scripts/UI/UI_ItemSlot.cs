@@ -6,11 +6,7 @@ public class UI_ItemSlot : UI
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _itemCountTxt;
 
-    protected override void InitUI()
-    {
-
-    }
-
+    protected override void InitUI() { }
     public void SetItemSlot(Sprite itemImage, int itemCount)
     {
         if (_itemImage != null)

@@ -7,7 +7,7 @@ public class UI_Inventory : UI
     [SerializeField] private GameObject _ui; // 인벤토리 UI
 
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private List<UI_ItemSlot> _items; // 슬롯 리스트
+    [SerializeField] private List<UI_ItemSlot> _slots; // 슬롯 리스트
 
     [SerializeField] protected Text _inventoryWeghtTxt;
 
@@ -19,12 +19,12 @@ public class UI_Inventory : UI
 
     protected override void InitUI()
     {
-        _items = new List<UI_ItemSlot>();
+        _slots = new List<UI_ItemSlot>();
     }
 
     private void Start()
     {
-        SetItemSlots(4);
+        SetItemSlots(_inventory.CurrentInventorySize);
         SetInventoryWeighText();
         _ui?.gameObject.SetActive(false);       
     }
@@ -57,17 +57,18 @@ public class UI_Inventory : UI
 
     public void SetItemSlots(int size)
     {
-        foreach (var item in _items)
+        foreach (var item in _slots)
         {
             Destroy(item.gameObject);
         }
-        _items.Clear();
+        _slots.Clear();
 
         // size 크기만큼 슬롯 추가
         for (int i = 0; i < size; i++)
         {
             UI_ItemSlot newSlot = Instantiate(_itemSlotPrefab, _itemSlotsParent);
-            _items.Add(newSlot);
+            newSlot.SetItemSlot(null, 0); // 빈 슬롯 세팅
+            _slots.Add(newSlot);
         }
     }
     public void SetInventoryWeighText()
@@ -75,8 +76,21 @@ public class UI_Inventory : UI
         _inventoryWeghtTxt.text = $"무게: {_inventory.CurrentInventoryWeight} / {_inventory.CurrnetMaxInventoryWeight}";
     }
 
-    public void UIFunction(Item item)
+    public void UIFunction(Dictionary<Item, int> inventoryItems)
     {
-        
+        Debug.Log("인벤토리 UI");
+
+        int index = 0;
+
+        foreach (var kvp in inventoryItems)
+        {
+            if (index >= _slots.Count) break;
+
+            Item item = kvp.Key;
+            int count = kvp.Value;
+
+            _slots[index].SetItemSlot(item.ItemImage, count);
+            index++;
+        }
     }
 }

@@ -40,6 +40,11 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private UI_Inventory _InventoryUI;
 
+    private void Awake()
+    {
+        _currentInventorySize = 4;
+    }
+
     public void AddItem(Item item)
     {
         float itemWeight = item.ItemWeight;
@@ -70,6 +75,7 @@ public class Inventory : MonoBehaviour
         // 무게 추가
         CurrentInventoryWeight += itemWeight;
         _InventoryUI?.SetInventoryWeighText();
+        _InventoryUI?.UIFunction(items);
     }
 
     public void RemoveItem(Item item)

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu]
 public class Item : ScriptableObject
 {
     [Header("Item Value")]
