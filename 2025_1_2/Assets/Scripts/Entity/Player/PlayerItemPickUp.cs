@@ -22,15 +22,22 @@ public class PlayerItemPickUp : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, _getDistance, Define.Layers.ITEM))
         {
-            IGetableItem getableItem = hit.collider.GetComponent<IGetableItem>();
+            GetableItem getableItem = hit.collider.GetComponent<GetableItem>();
             Debug.Log("줍기 가능");
 
             if (getableItem != null)
             {
                 if (Input.GetKeyDown(Define.Keys.GetItem))
                 {
-                    _inventory.AddItem(getableItem.GetItem());
-                    Destroy(hit.collider.gameObject);
+                    if (!_inventory.IsInventoryFull)
+                    {
+                        _inventory.AddItem(getableItem.GetItem());
+                        Destroy(hit.collider.gameObject);
+                    }
+                    else
+                    {
+                        Debug.Log("아이템 꽉 참");
+                    }
                 }
             }
         }

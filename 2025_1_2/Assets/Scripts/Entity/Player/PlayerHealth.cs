@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        _currentHP += Mathf.Clamp(_currentHP + amount, _currentHP, _maxHP);
+        _currentHP = Mathf.Clamp(_currentHP + amount, 0, _maxHP);
         _healthUI?.UIFunction();
     }
 }

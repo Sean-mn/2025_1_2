@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<Item, int> items = new();
+    private Dictionary<Item, int> items = new(); // Key; 받은 아이템, Value: 아이템 개수
 
     public const int MaxInventorySize = 8;
     public const float MaxInventoryWeight = 450f;
 
-    [Header("Currnet Max Value")]
+    [Header("Current Max Value")]
     [SerializeField] private int _currentMaxInventorySize;
     [SerializeField] private float _currentMaxInventoryWeight;
 
-    public float CurrnetMaxInventoryWeight
+    public float CurrentMaxInventoryWeight
     {
         get => _currentMaxInventoryWeight;
-        set => Mathf.Clamp(value, _currentInventoryWeight, MaxInventoryWeight);
+        set => _currentMaxInventoryWeight = Mathf.Clamp(value, 1f, MaxInventoryWeight);
     }
     public int CurrentMaxInventorySize
     {
         get => _currentMaxInventorySize;
-        set => Mathf.Clamp(value, _currentInventorySize, MaxInventorySize);
+        set => _currentMaxInventorySize = Mathf.Clamp(value, 1, MaxInventorySize);
     }
 
     [Header("Current Value")]
@@ -38,26 +38,36 @@ public class Inventory : MonoBehaviour
         set => _currentInventoryWeight = Mathf.Clamp(value, 0, _currentMaxInventoryWeight);
     }
 
+    [SerializeField] private int _maxSlotSize;
+    public int MaxSlotSize => _maxSlotSize;
+
+    [SerializeField] private bool _isInventoryFull = false;
+    public bool IsInventoryFull => _isInventoryFull;
+
     [SerializeField] private UI_Inventory _InventoryUI;
 
     private void Awake()
     {
-        _currentInventorySize = 4;
+        _maxSlotSize = 4;
     }
 
     public void AddItem(Item item)
     {
         float itemWeight = item.ItemWeight;
 
-        if (_currentInventorySize >= _currentMaxInventorySize)
+        // 인벤토리 공간 부족 확인
+        if (CurrentInventorySize >= CurrentMaxInventorySize)
         {
-            Debug.Log("인벤토리 공간 부족!.");
+            Debug.Log("인벤토리 공간 부족!");
+            _isInventoryFull = true;
             return;
         }
 
-        if (_currentInventoryWeight + itemWeight > _currentMaxInventoryWeight)
+        // 인벤토리 무게 초과 확인
+        if (CurrentInventoryWeight + itemWeight > CurrentMaxInventoryWeight)
         {
             Debug.Log("인벤토리 무게 초과!");
+            _isInventoryFull = true;
             return;
         }
 
@@ -70,9 +80,9 @@ public class Inventory : MonoBehaviour
         {
             Debug.Log("아이템 획득!");
             items[item] = 1;
+            CurrentInventorySize++;
         }
 
-        // 무게 추가
         CurrentInventoryWeight += itemWeight;
         _InventoryUI?.SetInventoryWeighText();
         _InventoryUI?.UIFunction(items);
@@ -89,11 +99,15 @@ public class Inventory : MonoBehaviour
             else
             {
                 items.Remove(item);
+                CurrentInventorySize--;
             }
 
-            // 무게 감소
             CurrentInventoryWeight -= item.ItemWeight;
             _InventoryUI?.SetInventoryWeighText();
+            _InventoryUI?.UIFunction(items);
+
+            if (_isInventoryFull)
+                _isInventoryFull = false;
         }
     }
 
@@ -101,12 +115,12 @@ public class Inventory : MonoBehaviour
     {
         CurrentInventorySize = size;
     }
-    public  void SetMaxInventorySize(int size)
+    public void SetMaxInventorySize(int size)
     {
-        _currentMaxInventorySize = Mathf.Max(size, 1); // 최소 1 이상의 값으로 설정
+        CurrentMaxInventorySize = size;
     }
-    public  void SetMaxInventoryWeight(float weight)
+    public void SetMaxInventoryWeight(float weight)
     {
-        _currentMaxInventoryWeight = Mathf.Max(weight, 1f); // 최소 1 이상의 값으로 설정
+        CurrentMaxInventoryWeight = weight;
     }
 }

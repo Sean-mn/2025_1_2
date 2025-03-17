@@ -9,10 +9,7 @@ public abstract class UI : MonoBehaviour
     }
 
     protected abstract void InitUI();
-    public virtual void UIFunction()
-    {
-
-    }
+    public virtual void UIFunction() { }
     public virtual IEnumerator UIFunctionCor()
     {
         yield return null;

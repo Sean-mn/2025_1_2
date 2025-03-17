@@ -3,14 +3,34 @@ using UnityEngine;
 public interface IGetableItem
 {
     public Item GetItem();
+    public void UseItem();
 }
 
-public abstract class GetableItem : MonoBehaviour, IGetableItem
+public class GetableItem : MonoBehaviour, IGetableItem
 {
     [SerializeField] protected Item _item;
+    public Item Item => _item;
 
+    [SerializeField] protected ItemType _type;
 
-    public abstract void UseItem();
+    protected virtual void Awake()
+    {
+        InitItem();
+    }
+
+    protected virtual void InitItem() { }
+    protected virtual void Start()
+    {
+        if (_type == ItemType.UsableItem)
+            _item.CanUse = true;
+        else 
+            _item.CanUse = false;
+    }
+
+    public virtual void UseItem()
+    {
+        Debug.Log($"{_item.name} »ç¿ë");
+    }
     public Item GetItem()
     {
         return _item;

@@ -20,7 +20,9 @@ public class UI_HealthBar : UI
 
     public override void UIFunction()
     {
-        if (_hpSlider != null)
+        if (_hpSlider != null && _playerHealth != null)
             _hpSlider.value = _playerHealth.CurrentHealth;
+        //else
+            //Debug.Log("Null");
     }
 }
