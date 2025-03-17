@@ -32,7 +32,7 @@ public class UI_ItemSlot : UI
     private void OnUseItemClicked()
     {
         if (_currentItem != null)
-            _currentItem.GetableItem.UseItem();
+            _currentItem.GetItem.UseItem();
         else
             Debug.Log("¿À·ç@#@#");
     }

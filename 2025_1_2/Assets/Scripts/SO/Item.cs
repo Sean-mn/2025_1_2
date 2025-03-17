@@ -34,5 +34,5 @@ public class Item : ScriptableObject
     }
 
     [SerializeField] private GetableItem _item;
-    public GetableItem GetableItem => _item;
+    public GetableItem GetItem => _item;
 }
