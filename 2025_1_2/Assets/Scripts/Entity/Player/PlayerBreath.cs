@@ -16,6 +16,7 @@ public class PlayerBreath : MonoBehaviour
 
     private void Awake()
     {
+        SetMaxBreathAmount(200);
         _currentBreathAmount = _maxBreathAmount;
     }
 
@@ -42,6 +43,13 @@ public class PlayerBreath : MonoBehaviour
                 OnDie();
             }
         }
+    }
+
+    public void SetMaxBreathAmount(float amount)
+    {
+        _maxBreathAmount = amount;
+        _currentBreathAmount = _maxBreathAmount;
+        _breathUI?.UIFunction();
     }
 
     public void SetBreathAmount(float amount)

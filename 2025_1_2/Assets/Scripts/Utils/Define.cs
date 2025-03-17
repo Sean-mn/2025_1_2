@@ -5,7 +5,7 @@ public class Define
     public static class Keys
     {
         public static readonly int MouseLeftClick = 0;
-        public static readonly KeyCode TurnHandLight = KeyCode.T;
+        public static readonly KeyCode TurnHandLight = KeyCode.R;
     }
     
     public static class Tags

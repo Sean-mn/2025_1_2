@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
@@ -6,6 +7,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public float CurrentHealth => _currentHealth;
 
     [SerializeField] private float _maxHealth;
+
+    private Renderer _rend;
+    private Color _originColor;
+
+    private void Awake()
+    {
+        _rend = GetComponent<Renderer>();
+        _originColor = _rend.material.color;
+    }
 
     private void Start()
     {
@@ -18,11 +28,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         {
             _currentHealth -= damage;
             Debug.Log($"ÇÇ°Ý µÊ: {damage}");
+            StartCoroutine(Damaged(0.3f));
         }
         else if (_currentHealth <= 0)
         {
             OnDie();
         }
+    }
+
+    private IEnumerator Damaged(float duration)
+    {
+        _rend.material.color = Color.red;
+        yield return new WaitForSeconds(duration);
+        _rend.material.color = _originColor;
     }
 
     private void OnDie()
