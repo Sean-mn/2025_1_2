@@ -61,6 +61,7 @@ public class UI_Inventory : UI
     public void SetItemSlots(int size)
     {
         int currentSlots = _slots.Count;
+        _inventory.CurrentMaxInventorySize = size;
 
         if (currentSlots > size)
         {

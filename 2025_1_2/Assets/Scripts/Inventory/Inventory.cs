@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<Item, int> items = new(); // Key; ¹ŞÀº ¾ÆÀÌÅÛ, Value: ¾ÆÀÌÅÛ °³¼ö
+    private Dictionary<Item, int> items = new(); // Key; ë°›ì€ ì•„ì´í…œ, Value: ì•„ì´í…œ ê°œìˆ˜
 
     public const int MaxInventorySize = 8;
     public const float MaxInventoryWeight = 450f;
@@ -55,32 +55,32 @@ public class Inventory : MonoBehaviour
     {
         float itemWeight = item.ItemWeight;
 
-        // ÀÎº¥Åä¸® °ø°£ ºÎÁ· È®ÀÎ
+        // ì¸ë²¤í† ë¦¬ ê³µê°„ ë¶€ì¡± í™•ì¸
         if (CurrentInventorySize >= CurrentMaxInventorySize)
         {
-            Debug.Log("ÀÎº¥Åä¸® °ø°£ ºÎÁ·!");
+            Debug.Log("ì¸ë²¤í† ë¦¬ ê³µê°„ ë¶€ì¡±!");
             _isInventoryFull = true;
             return;
         }
 
-        // ÀÎº¥Åä¸® ¹«°Ô ÃÊ°ú È®ÀÎ
+        // ì¸ë²¤í† ë¦¬ ë¬´ê²Œ ì´ˆê³¼ í™•ì¸
         if (CurrentInventoryWeight + itemWeight > CurrentMaxInventoryWeight)
         {
-            Debug.Log("ÀÎº¥Åä¸® ¹«°Ô ÃÊ°ú!");
+            Debug.Log("ì¸ë²¤í† ë¦¬ ë¬´ê²Œ ì´ˆê³¼!");
             _isInventoryFull = true;
             return;
         }
 
         if (items.TryGetValue(item, out int count))
         {
-            Debug.Log("Áßº¹ ¾ÆÀÌÅÛ È¹µæ");
+            Debug.Log("ì¤‘ë³µ ì•„ì´í…œ íšë“");
             items[item] = count + 1;
         }
         else
         {
-            Debug.Log("¾ÆÀÌÅÛ È¹µæ!");
+            Debug.Log("ì•„ì´í…œ íšë“!");
             items[item] = 1;
-            CurrentInventorySize++;
+            CurrentInventorySize += 1;
         }
 
         CurrentInventoryWeight += itemWeight;
