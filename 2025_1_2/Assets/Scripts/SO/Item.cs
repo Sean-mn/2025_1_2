@@ -9,4 +9,8 @@ public class Item : ScriptableObject
     [Header("Item Image")]
     [SerializeField] private Sprite _itemImage;
     public Sprite ItemImage => _itemImage;
+
+    [Header("Item Weight")]
+    [SerializeField] private float _itemWeight;
+    public float ItemWeight => _itemWeight;
 }

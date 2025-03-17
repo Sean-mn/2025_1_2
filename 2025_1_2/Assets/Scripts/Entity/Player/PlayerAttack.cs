@@ -12,7 +12,12 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private GameObject _arm;
+    [SerializeField] private BoxCollider _attackRange;
 
+    private void Start()
+    {
+        _attackRange?.gameObject.SetActive(false);
+    }
 
     private void Update()
     {
@@ -34,7 +39,12 @@ public class PlayerAttack : MonoBehaviour
 
         yield return RotateArm(attackRot1, _attackDelay);
         yield return RotateArm(attackRot2, _attackDelay);
+
+        _attackRange.gameObject.SetActive(true);
+
         yield return RotateArm(startRot, _attackDelay);
+
+        _attackRange?.gameObject.SetActive(false);
 
         _isAttacking = false;
     }
