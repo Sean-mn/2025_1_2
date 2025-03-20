@@ -32,7 +32,4 @@ public class Item : ScriptableObject
         get => _canUse;
         set => _canUse = value;
     }
-
-    [SerializeField] private GetableItem _item;
-    public GetableItem GetItem => _item;
 }

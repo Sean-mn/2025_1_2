@@ -16,5 +16,5 @@ MonoBehaviour:
   _itemValue: 30
   _itemImage: {fileID: 21300000, guid: 193acdad1a28b6c49b2a3ef1455b72c1, type: 3}
   _itemWeight: 10
-  _canUse: 1
+  _canUse: 0
   _item: {fileID: 4534832579154951385, guid: 79ac5ac98a25afe458f5cbf3e517d5ff, type: 3}

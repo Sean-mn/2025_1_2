@@ -1,126 +1,107 @@
-Ôªøusing System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum InventoryType
+{
+    Basic,
+    Large,
+    VeryLarge
+}
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<Item, int> items = new(); // Key; Î∞õÏùÄ ÏïÑÏù¥ÌÖú, Value: ÏïÑÏù¥ÌÖú Í∞úÏàò
+    private Dictionary<Item, int> _items = new();
 
-    public const int MaxInventorySize = 8;
-    public const float MaxInventoryWeight = 450f;
+    [Header("¿Œ∫•≈‰∏Æ ≈∏¿‘")]
+    [SerializeField] private InventoryType _type = InventoryType.Basic;
 
-    [Header("Current Max Value")]
-    [SerializeField] private int _currentMaxInventorySize;
-    [SerializeField] private float _currentMaxInventoryWeight;
+    [Header("æ∆¿Ã≈€ ºˆ∑Æ")]
+    [SerializeField] private int _maxItemAmount;
+    [SerializeField] private int _currentItemAmount;
 
-    public float CurrentMaxInventoryWeight
+    [Header("æ∆¿Ã≈‹ π´∞‘")]
+    [SerializeField] private float _maxItemWeight;
+    [SerializeField] private float _currentItemWeight;
+
+    private void Start()
     {
-        get => _currentMaxInventoryWeight;
-        set => _currentMaxInventoryWeight = Mathf.Clamp(value, 1f, MaxInventoryWeight);
-    }
-    public int CurrentMaxInventorySize
-    {
-        get => _currentMaxInventorySize;
-        set => _currentMaxInventorySize = Mathf.Clamp(value, 1, MaxInventorySize);
+        SetInventorySize(_type);
     }
 
-    [Header("Current Value")]
-    [SerializeField] private int _currentInventorySize;
-    public int CurrentInventorySize
+    public void SetInventorySize(InventoryType type)
     {
-        get => _currentInventorySize;
-        set => _currentInventorySize = Mathf.Clamp(value, 0, _currentMaxInventorySize);
-    }
+        _type = type;
 
-    [SerializeField] private float _currentInventoryWeight;
-    public float CurrentInventoryWeight
-    {
-        get => _currentInventoryWeight;
-        set => _currentInventoryWeight = Mathf.Clamp(value, 0, _currentMaxInventoryWeight);
-    }
-
-    [SerializeField] private int _maxSlotSize;
-    public int MaxSlotSize => _maxSlotSize;
-
-    [SerializeField] private bool _isInventoryFull = false;
-    public bool IsInventoryFull => _isInventoryFull;
-
-    [SerializeField] private UI_Inventory _InventoryUI;
-
-    private void Awake()
-    {
-        _maxSlotSize = 4;
-    }
-
-    public void AddItem(Item item)
-    {
-        float itemWeight = item.ItemWeight;
-
-        // Ïù∏Î≤§ÌÜ†Î¶¨ Í≥µÍ∞Ñ Î∂ÄÏ°± ÌôïÏù∏
-        if (CurrentInventorySize >= CurrentMaxInventorySize)
+        switch (type)
         {
-            Debug.Log("Ïù∏Î≤§ÌÜ†Î¶¨ Í≥µÍ∞Ñ Î∂ÄÏ°±!");
-            _isInventoryFull = true;
+            case InventoryType.Large:
+                _maxItemAmount = 6;
+                _maxItemWeight = 250f;
+                break;
+            case InventoryType.VeryLarge:
+                _maxItemAmount = 8;
+                _maxItemWeight = 400f;
+                break;
+            default:
+                _maxItemAmount = 4;
+                _maxItemWeight = 150f;
+                break;
+        }
+    }
+
+    public void AddItem(Item newItem, int amount = 1)
+    {
+        float itemWeight = newItem.ItemWeight * amount;
+
+        if (_currentItemWeight + itemWeight > _maxItemWeight)
+        {
+            Debug.Log("æ∆¿Ã≈€ π´∞‘ √ ∞˙");
             return;
         }
 
-        // Ïù∏Î≤§ÌÜ†Î¶¨ Î¨¥Í≤å Ï¥àÍ≥º ÌôïÏù∏
-        if (CurrentInventoryWeight + itemWeight > CurrentMaxInventoryWeight)
+        if (_items.ContainsKey(newItem))
         {
-            Debug.Log("Ïù∏Î≤§ÌÜ†Î¶¨ Î¨¥Í≤å Ï¥àÍ≥º!");
-            _isInventoryFull = true;
-            return;
-        }
-
-        if (items.TryGetValue(item, out int count))
-        {
-            Debug.Log("Ï§ëÎ≥µ ÏïÑÏù¥ÌÖú ÌöçÎìù");
-            items[item] = count + 1;
+            _items[newItem] += amount;
         }
         else
         {
-            Debug.Log("ÏïÑÏù¥ÌÖú ÌöçÎìù!");
-            items[item] = 1;
-            CurrentInventorySize += 1;
-        }
+            if (_currentItemAmount >= _maxItemAmount)
+            {
+                Debug.Log("¿Œ∫•≈‰∏Æ ºˆ∑Æ √ ∞˙.");
+                return;
+            }
 
-        CurrentInventoryWeight += itemWeight;
-        _InventoryUI?.SetInventoryWeighText();
-        _InventoryUI?.UIFunction(items);
+            _items.Add(newItem, amount);
+            _currentItemAmount++;
+            _currentItemWeight += itemWeight;
+            Debug.Log($"[æ∆¿Ã≈€ √ﬂ∞°] {newItem.name} x {amount} (√— ∞≥ºˆ: {_items[newItem]}, √— π´∞‘: {_currentItemWeight}/{_maxItemWeight})");
+        }
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(Item item, int amount = 1)
     {
-        if (items.TryGetValue(item, out int count))
+        if (_items.ContainsKey(item))
         {
-            if (count > 1)
+            if (_items[item] > amount)
             {
-                items[item] = count - 1;
+                _items[item] -= amount;
+                _currentItemWeight -= item.ItemWeight * amount;
+                Debug.Log($"[æ∆¿Ã≈€ ªË¡¶] {item.name} x {amount} (≥≤¿∫ ∞≥ºˆ: {_items[item]})");
             }
             else
             {
-                items.Remove(item);
-                CurrentInventorySize--;
+                Debug.Log($"[æ∆¿Ã≈€ ªË¡¶] {item.name} x {_items[item]} (øœ¿¸»˜ ªË¡¶µ )");
+                _currentItemWeight -= item.ItemWeight * _items[item];
+                _items.Remove(item);
+                _currentItemAmount--;
             }
-
-            CurrentInventoryWeight -= item.ItemWeight;
-            _InventoryUI?.SetInventoryWeighText();
-            _InventoryUI?.UIFunction(items);
-
-            if (_isInventoryFull)
-                _isInventoryFull = false;
         }
-    }
+        else
+        {
+            Debug.Log("¡¶∞≈«“ æ∆¿Ã≈€¿Ã æ¯Ω¿¥œ¥Ÿ.");
+            return;
+        }
 
-    public void SetInventorySize(int size)
-    {
-        CurrentInventorySize = size;
-    }
-    public void SetMaxInventorySize(int size)
-    {
-        CurrentMaxInventorySize = size;
-    }
-    public void SetMaxInventoryWeight(float weight)
-    {
-        CurrentMaxInventoryWeight = weight;
+        _currentItemWeight -= item.ItemWeight * amount;
     }
 }
