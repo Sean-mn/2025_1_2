@@ -350,3 +350,4 @@ MonoBehaviour:
   _itemSlots: []
   _itemSlotPrefab: {fileID: 6314662297660533623, guid: 17d1baf6561d9bb4abf09449b42eb7e6, type: 3}
   _itemSlotsParent: {fileID: 6073389597893894786}
+  _inventoryWeightTxt: {fileID: 2037690872426275160}

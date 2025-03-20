@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Inventory : UI
 {
@@ -12,6 +13,9 @@ public class UI_Inventory : UI
     [SerializeField] private GameObject _itemSlotPrefab;
     [SerializeField] private Transform _itemSlotsParent;
 
+    [Header("아이템 무게")]
+    [SerializeField] private Text _inventoryWeightTxt;
+
     protected override void InitUI()
     {
         _inventoryPanel.SetActive(false);
@@ -22,6 +26,7 @@ public class UI_Inventory : UI
     private void Update()
     {
         TryOpenInventory();
+        UpdateInventoryWeight();
     }
 
     #region 인벤토리 열기/닫기
@@ -67,6 +72,11 @@ public class UI_Inventory : UI
         }
 
         UpdateInventoryUI();
+    }
+
+    private void UpdateInventoryWeight()
+    {
+        _inventoryWeightTxt.text = $"무게 : {_inventory.CurrentItemWeight}";
     }
 
     public void UpdateInventoryUI()
