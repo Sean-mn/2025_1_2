@@ -269,7 +269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 60}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4605075229428942368
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7612435934695394227}
-  - component: {fileID: 2464818864178032345}
+  - component: {fileID: 7391354038146229072}
   m_Layer: 5
   m_Name: InventoryUI
   m_TagString: Untagged
@@ -333,7 +333,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1100, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2464818864178032345
+--- !u!114 &7391354038146229072
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,10 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49779223474030d4aa2e28d446c2efce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ui: {fileID: 7825375305102947026}
-  _inventory: {fileID: 0}
-  _slots: []
-  _inventoryWeghtTxt: {fileID: 2037690872426275160}
-  _isInventoryActive: 0
-  _itemSlotPrefab: {fileID: 6518923808856966658, guid: 17d1baf6561d9bb4abf09449b42eb7e6, type: 3}
+  _inventoryPanel: {fileID: 7825375305102947026}
+  _inventory: {fileID: -2723128550067880393, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
+  _itemSlots: []
+  _itemSlotPrefab: {fileID: 6314662297660533623, guid: 17d1baf6561d9bb4abf09449b42eb7e6, type: 3}
   _itemSlotsParent: {fileID: 6073389597893894786}

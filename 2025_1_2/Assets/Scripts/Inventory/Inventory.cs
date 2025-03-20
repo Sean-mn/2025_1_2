@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using UnityEngine;
 
 public enum InventoryType
@@ -10,18 +10,18 @@ public enum InventoryType
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<Item, int> _items = new();
-
-    [Header("¿Œ∫•≈‰∏Æ ≈∏¿‘")]
+    [Header("Ïù∏Î≤§ÌÜ†Î¶¨ ÌÉÄÏûÖ")]
     [SerializeField] private InventoryType _type = InventoryType.Basic;
 
-    [Header("æ∆¿Ã≈€ ºˆ∑Æ")]
+    [Header("ÏïÑÏù¥ÌÖú ÏàòÎüâ")]
     [SerializeField] private int _maxItemAmount;
-    [SerializeField] private int _currentItemAmount;
+    public int MaxItemAmount => _maxItemAmount;
 
-    [Header("æ∆¿Ã≈‹ π´∞‘")]
-    [SerializeField] private float _maxItemWeight;
-    [SerializeField] private float _currentItemWeight;
+    [Header("ÏïÑÏù¥ÌÖú Ïä¨Î°Ø")]
+    [SerializeField] private List<SlotData> _slots = new();
+
+    public delegate void OnInventoryChanged();
+    public event OnInventoryChanged onInventoryChanged;
 
     private void Start()
     {
@@ -36,72 +36,82 @@ public class Inventory : MonoBehaviour
         {
             case InventoryType.Large:
                 _maxItemAmount = 6;
-                _maxItemWeight = 250f;
                 break;
             case InventoryType.VeryLarge:
                 _maxItemAmount = 8;
-                _maxItemWeight = 400f;
                 break;
             default:
                 _maxItemAmount = 4;
-                _maxItemWeight = 150f;
                 break;
         }
+
+        _slots = new List<SlotData>(_maxItemAmount);
+        for (int i = 0; i < _maxItemAmount; i++)
+        {
+            _slots.Add(null);
+        }
+
+        Debug.Log($"{_type} Ïù∏Î≤§ÌÜ†Î¶¨ ÌÅ¨Í∏∞: {_maxItemAmount}");
     }
 
-    public void AddItem(Item newItem, int amount = 1)
+    public void AddItem(GetableItem newItem, int amount = 1)
     {
-        float itemWeight = newItem.ItemWeight * amount;
-
-        if (_currentItemWeight + itemWeight > _maxItemWeight)
+        if (newItem == null || newItem.GetItem() == null)
         {
-            Debug.Log("æ∆¿Ã≈€ π´∞‘ √ ∞˙");
+            Debug.LogWarning("Ï∂îÍ∞ÄÌïòÎ†§Îäî ÏïÑÏù¥ÌÖúÏù¥ Ï°¥Ïû¨ÌïòÏßÄ ÏïäÏäµÎãàÎã§.");
             return;
         }
 
-        if (_items.ContainsKey(newItem))
+        Item item = newItem.GetItem();
+
+        foreach (var slot in _slots)
         {
-            _items[newItem] += amount;
-        }
-        else
-        {
-            if (_currentItemAmount >= _maxItemAmount)
+            if (slot != null && slot.item.GetItem() == item)
             {
-                Debug.Log("¿Œ∫•≈‰∏Æ ºˆ∑Æ √ ∞˙.");
+                slot.count += amount;
+                onInventoryChanged?.Invoke();
                 return;
             }
-
-            _items.Add(newItem, amount);
-            _currentItemAmount++;
-            _currentItemWeight += itemWeight;
-            Debug.Log($"[æ∆¿Ã≈€ √ﬂ∞°] {newItem.name} x {amount} (√— ∞≥ºˆ: {_items[newItem]}, √— π´∞‘: {_currentItemWeight}/{_maxItemWeight})");
         }
+
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            if (_slots[i] == null)
+            {
+                _slots[i] = new SlotData(newItem, amount);
+                onInventoryChanged?.Invoke();
+                return;
+            }
+        }
+
+        Debug.Log("Ïù∏Î≤§ÌÜ†Î¶¨Í∞Ä Í∞ÄÎìù Ï∞ºÏäµÎãàÎã§.");
     }
 
-    public void RemoveItem(Item item, int amount = 1)
+    public void RemoveItem(Item removeItem, int amount = 1)
     {
-        if (_items.ContainsKey(item))
+        for (int i = 0; i < _slots.Count; i++)
         {
-            if (_items[item] > amount)
+            if (_slots[i] != null && _slots[i].item.GetItem() == removeItem)
             {
-                _items[item] -= amount;
-                _currentItemWeight -= item.ItemWeight * amount;
-                Debug.Log($"[æ∆¿Ã≈€ ªË¡¶] {item.name} x {amount} (≥≤¿∫ ∞≥ºˆ: {_items[item]})");
+                if (_slots[i].count > amount)
+                {
+                    _slots[i].count -= amount;
+                }
+                else
+                {
+                    _slots[i] = null;
+                }
+
+                onInventoryChanged?.Invoke();
+                return;
             }
-            else
-            {
-                Debug.Log($"[æ∆¿Ã≈€ ªË¡¶] {item.name} x {_items[item]} (øœ¿¸»˜ ªË¡¶µ )");
-                _currentItemWeight -= item.ItemWeight * _items[item];
-                _items.Remove(item);
-                _currentItemAmount--;
-            }
-        }
-        else
-        {
-            Debug.Log("¡¶∞≈«“ æ∆¿Ã≈€¿Ã æ¯Ω¿¥œ¥Ÿ.");
-            return;
         }
 
-        _currentItemWeight -= item.ItemWeight * amount;
+        Debug.Log("Ï†úÍ±∞Ìï† ÏïÑÏù¥ÌÖúÏù¥ ÏóÜÏäµÎãàÎã§.");
+    }
+
+    public List<SlotData> GetInventoryData()
+    {
+        return _slots;
     }
 }

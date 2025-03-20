@@ -9,9 +9,12 @@ public class PlayerRotate : MonoBehaviour
     private float _mouseX;
     private float _mouseY;
 
+    public static bool canRotate = true;
+
     private void Update()
     {
-        OnRotate();
+        if (canRotate)
+            OnRotate();
     }
 
     private void OnRotate()

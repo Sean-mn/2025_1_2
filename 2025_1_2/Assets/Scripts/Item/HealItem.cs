@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealItem : GetableItem
+public class HealItem : GetableItem, IGetableItem
 {
     [SerializeField] private PlayerHealth _playerHealth;
 
@@ -12,7 +12,6 @@ public class HealItem : GetableItem
     public override void UseItem()
     {
         base.UseItem();
-
         _playerHealth.Heal(_item.ItemValue);
     }
 }
