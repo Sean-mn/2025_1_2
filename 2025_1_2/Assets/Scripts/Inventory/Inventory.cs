@@ -27,11 +27,9 @@ public class Inventory : MonoBehaviour
     [Header("아이템 슬롯")]
     public List<SlotData> _slotData = new();
 
-    public event Action onInventoryChanged;
-
     [SerializeField] private UI_Inventory _inventoryUI;
 
-    private void Awake()
+    private void Start()
     {
         SetInventorySize(_type);
     }
@@ -56,7 +54,7 @@ public class Inventory : MonoBehaviour
                 break;
         }
 
-        _slotData = new List<SlotData>(_maxItemAmount);
+        _slotData.Clear();
         for (int i = 0; i < _maxItemAmount; i++)
         {
             _slotData.Add(new SlotData(null, 0));
@@ -92,7 +90,8 @@ public class Inventory : MonoBehaviour
             {
                 slot.count += amount;
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
-                onInventoryChanged?.Invoke();
+                _inventoryUI.UpdateInventoryWeight(_currentItemWeight);
+                _inventoryUI.UpdateInventoryUI();
                 return;
             }
         }
@@ -104,7 +103,8 @@ public class Inventory : MonoBehaviour
                 _currentItemAmount += 1;
                 _slotData[i] = new SlotData(newItem, amount);
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
-                onInventoryChanged?.Invoke();
+                _inventoryUI.UpdateInventoryWeight(_currentItemWeight);
+                _inventoryUI.UpdateInventoryUI();
                 return;
             }
         }
@@ -126,13 +126,11 @@ public class Inventory : MonoBehaviour
                 }
                 else
                 {
+                    _currentItemAmount -= 1;
                     _currentItemWeight -= removeItem.ItemWeight * _slotData[i].count; // 전체 수량만큼 무게 감소
                     _slotData[i] = null;
                 }
 
-                _currentItemAmount -= 1;
-
-                onInventoryChanged?.Invoke();
                 return;
             }
         }
@@ -140,13 +138,5 @@ public class Inventory : MonoBehaviour
         Debug.Log("제거할 아이템 X.");
     }
 
-    public List<SlotData> GetInventoryData()
-    {
-        Debug.Log($"슬롯 데이터 크기: {_slotData.Count}");
-        foreach (var slot in _slotData)
-        {
-            Debug.Log(slot != null ? $"아이템: {slot.item}, 개수: {slot.count}" : "빈 슬롯");
-        }
-        return _slotData;
-    }
+    public List<SlotData> GetInventoryData() => _slotData;
 }

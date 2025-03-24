@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,21 +20,11 @@ public class UI_Inventory : UI
     protected override void InitUI()
     {
         _inventoryPanel.SetActive(false);
-        SetItemSlots(4);
     }
 
     private void Start()
     {
-        if (_inventory != null)
-        {
-            Debug.Log("이벤트 등록");
-            _inventory.onInventoryChanged += UpdateInventoryUI;
-            _inventory.onInventoryChanged += UpdateInventoryWeight;
-        }
-        else
-        {
-            Debug.LogError("Inventory가 null입니다.");
-        }
+        SetItemSlots(4);
     }
 
     private void Update()
@@ -85,10 +76,10 @@ public class UI_Inventory : UI
         UpdateInventoryUI();
     }
 
-    public void UpdateInventoryWeight()
+    public void UpdateInventoryWeight(float weight)
     {
-        Debug.Log(_inventory.CurrentItemWeight);
-        _inventoryWeightTxt.text = $"무게 : {_inventory.CurrentItemWeight}";
+        Debug.Log(weight);
+        _inventoryWeightTxt.text = $"무게 : {weight}";
     }
 
     public void UpdateInventoryUI()
