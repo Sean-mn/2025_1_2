@@ -955,6 +955,17 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!114 &958353796 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -2723128550067880393, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
+  m_PrefabInstance: {fileID: 1864630852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d23773655b68f54d935255a888b0063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1121676200
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1125,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7612435934695394227, guid: dd8027014d364c348a3abede885b8072, type: 3}
   m_PrefabInstance: {fileID: 3055581600079591206}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1251205414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7391354038146229072, guid: dd8027014d364c348a3abede885b8072, type: 3}
+  m_PrefabInstance: {fileID: 3055581600079591206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49779223474030d4aa2e28d446c2efce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1339983413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1313,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2723128550067880393, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
+      propertyPath: _inventoryUI
+      value: 
+      objectReference: {fileID: 1251205414}
+    - target: {fileID: -2723128550067880393, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
+      propertyPath: _slots.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2723128550067880393, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
+      propertyPath: _slotData.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1123567735157723788, guid: 5ef6cc927741459459fb223881d437b2, type: 3}
       propertyPath: m_Name
       value: Inventory
@@ -1466,6 +1500,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 379976302}
     m_Modifications:
+    - target: {fileID: 2037690872426275160, guid: dd8027014d364c348a3abede885b8072, type: 3}
+      propertyPath: m_Text
+      value: "\uBB34\uAC8C: 0"
+      objectReference: {fileID: 0}
     - target: {fileID: 2464818864178032345, guid: dd8027014d364c348a3abede885b8072, type: 3}
       propertyPath: _inventory
       value: 
@@ -1789,7 +1827,7 @@ PrefabInstance:
     - target: {fileID: 4804876377391212854, guid: cbad42bd7aa35904bb2232babea258dc, type: 3}
       propertyPath: _inventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 958353796}
     - target: {fileID: 7845585770714971734, guid: cbad42bd7aa35904bb2232babea258dc, type: 3}
       propertyPath: _breathUI
       value: 

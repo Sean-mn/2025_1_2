@@ -20,13 +20,25 @@ public class UI_Inventory : UI
     {
         _inventoryPanel.SetActive(false);
         SetItemSlots(4);
-        _inventory.onInventoryChanged += UpdateInventoryUI;
+    }
+
+    private void Start()
+    {
+        if (_inventory != null)
+        {
+            Debug.Log("이벤트 등록");
+            _inventory.onInventoryChanged += UpdateInventoryUI;
+            _inventory.onInventoryChanged += UpdateInventoryWeight;
+        }
+        else
+        {
+            Debug.LogError("Inventory가 null입니다.");
+        }
     }
 
     private void Update()
     {
         TryOpenInventory();
-        UpdateInventoryWeight();
     }
 
     #region 인벤토리 열기/닫기
@@ -47,7 +59,6 @@ public class UI_Inventory : UI
     {
         _inventoryPanel.SetActive(true);
         Managers.Util.UnLockCursor();
-        UpdateInventoryUI();
     }
     private void CloseInventory()
     {
@@ -74,23 +85,29 @@ public class UI_Inventory : UI
         UpdateInventoryUI();
     }
 
-    private void UpdateInventoryWeight()
+    public void UpdateInventoryWeight()
     {
+        Debug.Log(_inventory.CurrentItemWeight);
         _inventoryWeightTxt.text = $"무게 : {_inventory.CurrentItemWeight}";
     }
 
     public void UpdateInventoryUI()
     {
-        List<SlotData> inventoryData = _inventory.GetInventoryData();
+        List<SlotData> inventoryData = _inventory._slotData; // 이게 0이네???
+        Debug.Log(inventoryData.Count);
+
+        Debug.Log("인벤토리 UI 업데이트");
 
         for (int i = 0; i < _itemSlots.Count; i++)
         {
             if (i < inventoryData.Count && inventoryData[i] != null)
             {
+                Debug.Log("슬롯 업데이트");
                 _itemSlots[i].SetItemSlot(inventoryData[i].item, inventoryData[i].count);
             }
             else
             {
+                Debug.Log("슬롯 초기화");
                 _itemSlots[i].ClearSlot();
             }
         }

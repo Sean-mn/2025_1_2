@@ -4,10 +4,10 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SlotData
 {
-    public GetableItem item;
+    public Item item;
     public int count;
 
-    public SlotData(GetableItem newItem,  int count)
+    public SlotData(Item newItem,  int count)
     {
         this.item = newItem;
         this.count = count;
@@ -20,14 +20,15 @@ public class Slot : MonoBehaviour
     [SerializeField] private Text _itemAmountTxt;
     [SerializeField] Button _itemUseBtn;
 
-    private GetableItem _item;
+    private Item _item;
     private int _count;
 
-    public void SetItemSlot(GetableItem newItem, int count)
+    public void SetItemSlot(Item newItem, int count)
     {
         _item = newItem;
         _count = count;
-        _itemImage.sprite = newItem.GetItem().ItemImage;
+
+        _itemImage.sprite = newItem.ItemImage;
         _itemImage.enabled = true;
         _itemAmountTxt.text = count > 1 ? count.ToString() : "";
     }

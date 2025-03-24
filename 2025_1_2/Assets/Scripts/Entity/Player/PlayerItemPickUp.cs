@@ -24,14 +24,14 @@ public class PlayerItemPickUp : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, _getDistance, Define.Layers.ITEM))
         {
             Debug.Log("æ∆¿Ã≈€ ¡›±‚");
-            IGetableItem getableItem = hit.collider.GetComponent<IGetableItem>();
+            IGetableItem item = hit.collider.GetComponent<IGetableItem>();
 
-            if (getableItem != null && Input.GetKeyDown(Define.Keys.GetItem))
+            if (item != null && Input.GetKeyDown(Define.Keys.GetItem))
             {
-                GetableItem itemObject = getableItem as GetableItem;
-                if (itemObject != null)
+                if (item != null)
                 {
-                    _inventory.AddItem(itemObject);
+                    _inventory.AddItem(item.GetItem());
+                    Debug.Log($"æ∆¿Ã≈€ »πµÊ: {item.GetItem().name}");
                     Destroy(hit.collider.gameObject);
                 }
             }

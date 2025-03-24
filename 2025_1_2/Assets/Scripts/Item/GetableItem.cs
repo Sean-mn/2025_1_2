@@ -9,8 +9,6 @@ public interface IGetableItem
 public class GetableItem : MonoBehaviour, IGetableItem
 {
     [SerializeField] protected Item _item;
-    public Item Item => _item;
-
     [SerializeField] protected ItemType _type;
 
     protected virtual void Awake()
@@ -31,8 +29,5 @@ public class GetableItem : MonoBehaviour, IGetableItem
     {
         Debug.Log($"{_item.name} »ç¿ë");
     }
-    public Item GetItem()
-    {
-        return _item;
-    }
+    public Item GetItem() => _item;
 }

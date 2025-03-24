@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum InventoryType
@@ -14,7 +15,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private InventoryType _type = InventoryType.Basic;
 
     [Header("아이템 수량")]
-    [SerializeField] private int _currentAmount;
+    [SerializeField] private int _currentItemAmount;
     [SerializeField] private int _maxItemAmount;
     public int MaxItemAmount => _maxItemAmount;
 
@@ -24,12 +25,13 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float _maxItemWeight;
 
     [Header("아이템 슬롯")]
-    [SerializeField] private List<SlotData> _slots = new();
+    public List<SlotData> _slotData = new();
 
-    public delegate void OnInventoryChanged();
-    public event OnInventoryChanged onInventoryChanged;
+    public event Action onInventoryChanged;
 
-    private void Start()
+    [SerializeField] private UI_Inventory _inventoryUI;
+
+    private void Awake()
     {
         SetInventorySize(_type);
     }
@@ -54,45 +56,57 @@ public class Inventory : MonoBehaviour
                 break;
         }
 
-        _slots = new List<SlotData>(_maxItemAmount);
+        _slotData = new List<SlotData>(_maxItemAmount);
         for (int i = 0; i < _maxItemAmount; i++)
         {
-            _slots.Add(null);
+            _slotData.Add(new SlotData(null, 0));
         }
 
-        Debug.Log($"{_type} 인벤토리 크기: {_maxItemAmount}");
+        Debug.Log($"{_type} 인벤토리 크기: {_slotData.Count}");
     }
 
-    public void AddItem(GetableItem newItem, int amount = 1)
+    public void AddItem(Item newItem, int amount = 1)
     {
-        if (newItem == null || newItem.GetItem() == null)
+        if (newItem == null)
         {
             return;
         }
 
-        Item item = newItem.GetItem();
-        float itemWeight = newItem.GetItem().ItemWeight; // 아이템 무게
+        float itemWeight = newItem.ItemWeight; // 아이템 무게
 
-        // 아이템이 이미 존재하는 슬롯을 찾아 수량을 추가.
-        foreach (var slot in _slots)
+        if (_currentItemWeight + itemWeight > _maxItemWeight)
         {
-            if (slot != null && slot.item.GetItem() == item)
+            Debug.Log("인벤토리 무게 초과");
+            return;
+        }
+
+        if (_currentItemAmount > _maxItemAmount)
+        {
+            Debug.Log("인벤토리 수량 초과");
+            return;
+        }
+
+        foreach (var slot in _slotData)
+        {
+            if (slot != null && slot.item != null && slot.item == newItem)
             {
                 slot.count += amount;
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
                 onInventoryChanged?.Invoke();
+                _inventoryUI?.UpdateInventoryUI();
                 return;
             }
         }
 
-        // 빈 슬롯에 아이템을 추가.
-        for (int i = 0; i < _slots.Count; i++)
+        for (int i = 0; i < _slotData.Count; i++)
         {
-            if (_slots[i] == null)
+            if (_slotData[i] == null || _slotData[i].item == null) 
             {
-                _slots[i] = new SlotData(newItem, amount);
+                _currentItemAmount += 1;
+                _slotData[i] = new SlotData(newItem, amount);
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
                 onInventoryChanged?.Invoke();
+                _inventoryUI?.UpdateInventoryUI();
                 return;
             }
         }
@@ -100,24 +114,25 @@ public class Inventory : MonoBehaviour
         Debug.Log("인벤토리가 가득 참.");
     }
 
-    public void RemoveItem(GetableItem removeItem, int amount = 1)
+    public void RemoveItem(Item removeItem, int amount = 1)
     {
-        Item item = removeItem.GetItem();
-        for (int i = 0; i < _slots.Count; i++)
+        for (int i = 0; i < _slotData.Count; i++)
         {
-            if (_slots[i] != null && _slots[i].item.GetItem() == item)
+            if (_slotData[i] != null && _slotData[i].item == removeItem)
             {
                 // 아이템 수량, 무게 감소.
-                if (_slots[i].count > amount)
+                if (_slotData[i].count > amount)
                 {
-                    _slots[i].count -= amount;
-                    _currentItemWeight -= removeItem.GetItem().ItemWeight * amount; // 총 무게 갱신
+                    _slotData[i].count -= amount;
+                    _currentItemWeight -= removeItem.ItemWeight * amount; // 총 무게 갱신
                 }
                 else
                 {
-                    _currentItemWeight -= removeItem.GetItem().ItemWeight * _slots[i].count; // 전체 수량만큼 무게 감소
-                    _slots[i] = null;
+                    _currentItemWeight -= removeItem.ItemWeight * _slotData[i].count; // 전체 수량만큼 무게 감소
+                    _slotData[i] = null;
                 }
+
+                _currentItemAmount -= 1;
 
                 onInventoryChanged?.Invoke();
                 return;
@@ -129,6 +144,11 @@ public class Inventory : MonoBehaviour
 
     public List<SlotData> GetInventoryData()
     {
-        return _slots;
+        Debug.Log($"슬롯 데이터 크기: {_slotData.Count}");
+        foreach (var slot in _slotData)
+        {
+            Debug.Log(slot != null ? $"아이템: {slot.item}, 개수: {slot.count}" : "빈 슬롯");
+        }
+        return _slotData;
     }
 }

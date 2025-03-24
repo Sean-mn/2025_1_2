@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 0
-  _maxItemAmount: 0
   _currentItemAmount: 0
-  _maxItemWeight: 0
+  _maxItemAmount: 0
   _currentItemWeight: 0
+  _maxItemWeight: 0
+  _slotData: []
+  _inventoryUI: {fileID: 7391354038146229072, guid: dd8027014d364c348a3abede885b8072, type: 3}
