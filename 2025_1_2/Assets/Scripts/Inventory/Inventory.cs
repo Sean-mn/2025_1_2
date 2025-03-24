@@ -30,6 +30,8 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private UI_Inventory _inventoryUI;
 
+    public event Action onInventoryChanged;
+
     private void Awake()
     {
         SetInventorySize(_type);
@@ -91,8 +93,7 @@ public class Inventory : MonoBehaviour
             {
                 slot.count += amount;
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
-                _inventoryUI.UpdateInventoryWeight(_currentItemWeight);
-                _inventoryUI.UpdateInventoryUI();
+                onInventoryChanged?.Invoke();
                 return;
             }
         }
@@ -104,8 +105,7 @@ public class Inventory : MonoBehaviour
                 _currentItemAmount += 1;
                 slotData[i] = new SlotData(newItem, amount);
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
-                _inventoryUI.UpdateInventoryWeight(_currentItemWeight);
-                _inventoryUI.UpdateInventoryUI();
+                onInventoryChanged?.Invoke();
                 return;
             }
         }
@@ -124,7 +124,7 @@ public class Inventory : MonoBehaviour
                 {
                     slotData[i].count -= amount;
                     _currentItemWeight -= removeItem.ItemWeight * amount; // 총 무게 갱신
-                    _inventoryUI?.UpdateInventoryUI();
+                    onInventoryChanged?.Invoke();
                 }
                 else
                 {
@@ -139,8 +139,7 @@ public class Inventory : MonoBehaviour
                     {
                         slotData[i] = null;
                     }
-                    _inventoryUI?.UpdateInventoryUI();
-
+                    onInventoryChanged?.Invoke();
                 }
 
                 return;

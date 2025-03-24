@@ -9,6 +9,10 @@ public enum ItemType
 [CreateAssetMenu]
 public class Item : ScriptableObject
 {
+    [Header("Item Type")]
+    [SerializeField] private ItemType _itemType;
+    public ItemType ItemType { get => _itemType ; set => _itemType = value ; }
+
     [Header("Item Money")]
     [SerializeField] private int _itemMoney;
     public int ItemMoney => _itemMoney;

@@ -8,7 +8,6 @@ public interface IGetableItem
 public class GetableItem : MonoBehaviour, IGetableItem
 {
     [SerializeField] protected Item _item;
-    [SerializeField] protected ItemType _type;
 
     protected virtual void Awake()
     {
@@ -18,7 +17,7 @@ public class GetableItem : MonoBehaviour, IGetableItem
     protected virtual void InitItem() { }
     protected virtual void Start()
     {
-        if (_type == ItemType.UsableItem)
+        if (_item.ItemType == ItemType.UsableItem)
             _item.CanUse = true;
         else 
             _item.CanUse = false;

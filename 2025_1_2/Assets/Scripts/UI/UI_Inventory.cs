@@ -19,18 +19,32 @@ public class UI_Inventory : UI
     protected override void InitUI()
     {
         _inventoryPanel.SetActive(false);
+
+        if (_inventory == null)
+        {
+            _inventory = FindAnyObjectByType<Inventory>();
+        }
     }
 
     private void Start()
     {
         SetItemSlots(4);
+
+        if (_inventory != null)
+        {
+            _inventory.onInventoryChanged += UpdateInventoryUI;
+            _inventory.onInventoryChanged += UpdateInventoryWeight;
+        }
+        else
+        {
+            Debug.LogError("인벤토리가 없습니다.");
+        }
     }
 
     private void Update()
     {
         TryOpenInventory();
     }
-
     #region 인벤토리 열기/닫기
     private void TryOpenInventory()
     {
@@ -75,10 +89,9 @@ public class UI_Inventory : UI
         UpdateInventoryUI();
     }
 
-    public void UpdateInventoryWeight(float weight)
+    public void UpdateInventoryWeight()
     {
-        Debug.Log(weight);
-        _inventoryWeightTxt.text = $"무게 : {weight}";
+        _inventoryWeightTxt.text = $"무게 : {_inventory.CurrentItemWeight}";
     }
 
     public void UpdateInventoryUI()
