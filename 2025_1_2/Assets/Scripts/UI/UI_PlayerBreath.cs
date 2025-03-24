@@ -9,6 +9,7 @@ public class UI_PlayerBreath : UI
     protected override void InitUI()
     {
         _breathBar = GetComponent<Slider>();
+        _playerBreath = FindAnyObjectByType<PlayerBreath>();
     }
 
     private void Start()

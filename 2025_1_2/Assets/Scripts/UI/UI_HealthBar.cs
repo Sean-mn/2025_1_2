@@ -10,6 +10,7 @@ public class UI_HealthBar : UI
     protected override void InitUI()
     {
         _hpSlider = GetComponent<Slider>();
+        _playerHealth = FindAnyObjectByType<PlayerHealth>();
     }
 
     private void Start()
@@ -22,7 +23,5 @@ public class UI_HealthBar : UI
     {
         if (_hpSlider != null && _playerHealth != null)
             _hpSlider.value = _playerHealth.CurrentHealth;
-        //else
-            //Debug.Log("Null");
     }
 }
