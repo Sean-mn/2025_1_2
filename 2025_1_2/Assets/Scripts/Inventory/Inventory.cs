@@ -15,7 +15,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private InventoryType _type = InventoryType.Basic;
 
     [Header("아이템 수량")]
-    [SerializeField] private int _currentItemAmount;
+    [SerializeField]private int _currentItemAmount;
+    public int CurrentItemAmount => _currentItemAmount;
     [SerializeField] private int _maxItemAmount;
     public int MaxItemAmount => _maxItemAmount;
 
@@ -25,11 +26,11 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float _maxItemWeight;
 
     [Header("아이템 슬롯")]
-    public List<SlotData> _slotData = new();
+    public List<SlotData> slotData;
 
     [SerializeField] private UI_Inventory _inventoryUI;
 
-    private void Start()
+    private void Awake()
     {
         SetInventorySize(_type);
     }
@@ -54,13 +55,13 @@ public class Inventory : MonoBehaviour
                 break;
         }
 
-        _slotData.Clear();
+        slotData.Clear();
         for (int i = 0; i < _maxItemAmount; i++)
         {
-            _slotData.Add(new SlotData(null, 0));
+            slotData.Add(new SlotData(null, 0));
         }
 
-        Debug.Log($"{_type} 인벤토리 크기: {_slotData.Count}");
+        Debug.Log($"{_type} 인벤토리 크기: {slotData.Count}");
     }
 
     public void AddItem(Item newItem, int amount = 1)
@@ -84,7 +85,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        foreach (var slot in _slotData)
+        foreach (var slot in slotData)
         {
             if (slot != null && slot.item != null && slot.item == newItem)
             {
@@ -96,12 +97,12 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < _slotData.Count; i++)
+        for (int i = 0; i < slotData.Count; i++)
         {
-            if (_slotData[i] == null || _slotData[i].item == null) 
+            if (slotData[i] == null || slotData[i].item == null) 
             {
                 _currentItemAmount += 1;
-                _slotData[i] = new SlotData(newItem, amount);
+                slotData[i] = new SlotData(newItem, amount);
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
                 _inventoryUI.UpdateInventoryWeight(_currentItemWeight);
                 _inventoryUI.UpdateInventoryUI();
@@ -114,21 +115,21 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(Item removeItem, int amount = 1)
     {
-        for (int i = 0; i < _slotData.Count; i++)
+        for (int i = 0; i < slotData.Count; i++)
         {
-            if (_slotData[i] != null && _slotData[i].item == removeItem)
+            if (slotData[i] != null && slotData[i].item == removeItem)
             {
                 // 아이템 수량, 무게 감소.
-                if (_slotData[i].count > amount)
+                if (slotData[i].count > amount)
                 {
-                    _slotData[i].count -= amount;
+                    slotData[i].count -= amount;
                     _currentItemWeight -= removeItem.ItemWeight * amount; // 총 무게 갱신
                 }
                 else
                 {
                     _currentItemAmount -= 1;
-                    _currentItemWeight -= removeItem.ItemWeight * _slotData[i].count; // 전체 수량만큼 무게 감소
-                    _slotData[i] = null;
+                    _currentItemWeight -= removeItem.ItemWeight * slotData[i].count; // 전체 수량만큼 무게 감소
+                    slotData[i] = null;
                 }
 
                 return;
@@ -138,5 +139,5 @@ public class Inventory : MonoBehaviour
         Debug.Log("제거할 아이템 X.");
     }
 
-    public List<SlotData> GetInventoryData() => _slotData;
+    public List<SlotData> GetInventoryData() => slotData;
 }

@@ -49,5 +49,6 @@ public class Slot : MonoBehaviour
         _itemImage.sprite = null;
         _itemImage.enabled = false;
         _itemAmountTxt.text = "";
+        _itemUseBtn.enabled = false;
     }
 }

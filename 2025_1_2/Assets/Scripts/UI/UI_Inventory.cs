@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -84,17 +83,12 @@ public class UI_Inventory : UI
 
     public void UpdateInventoryUI()
     {
-        List<SlotData> inventoryData = _inventory.GetInventoryData(); // 이게 0이네???
-        Debug.Log(inventoryData.Count);
-
-        Debug.Log("인벤토리 UI 업데이트");
-
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < _inventory.MaxItemAmount; i++)
         {
-            if (i < inventoryData.Count && inventoryData[i] != null)
+            if (i < _inventory.CurrentItemAmount && _inventory.slotData[i] != null)
             {
                 Debug.Log("슬롯 업데이트");
-                _itemSlots[i].SetItemSlot(inventoryData[i].item, inventoryData[i].count);
+                _itemSlots[i].SetItemSlot(_inventory.slotData[i].item, _inventory.slotData[i].count);
             }
             else
             {
