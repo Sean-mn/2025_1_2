@@ -32,4 +32,9 @@ public class Item : ScriptableObject
         get => _canUse;
         set => _canUse = value;
     }
+
+    public virtual void UseItem()
+    {
+
+    }
 }

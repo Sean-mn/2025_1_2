@@ -124,12 +124,15 @@ public class Inventory : MonoBehaviour
                 {
                     slotData[i].count -= amount;
                     _currentItemWeight -= removeItem.ItemWeight * amount; // 총 무게 갱신
+                    _inventoryUI?.UpdateInventoryUI();
                 }
                 else
                 {
                     _currentItemAmount -= 1;
                     _currentItemWeight -= removeItem.ItemWeight * slotData[i].count; // 전체 수량만큼 무게 감소
                     slotData[i] = null;
+                    _inventoryUI?.UpdateInventoryUI();
+
                 }
 
                 return;

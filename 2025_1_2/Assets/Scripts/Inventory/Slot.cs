@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,11 @@ public class Slot : MonoBehaviour
 
     private Item _item;
     private int _count;
+
+    private void Start()
+    {
+        _itemUseBtn.onClick.AddListener(UseItem);
+    }
 
     public void SetItemSlot(Item newItem, int count)
     {
@@ -49,6 +55,18 @@ public class Slot : MonoBehaviour
         _itemImage.sprite = null;
         _itemImage.enabled = false;
         _itemAmountTxt.text = "";
-        _itemUseBtn.enabled = false;
+        _itemUseBtn.gameObject.SetActive(false);
+    }
+
+    public void UseItem()
+    {
+        Debug.Log($"아이템 사용: {_item.name}");
+
+        Inventory inventory = FindObjectOfType<Inventory>();
+        _item.UseItem();
+        inventory.RemoveItem(_item);
+
+        if (_count <= 0)
+            ClearSlot();
     }
 }

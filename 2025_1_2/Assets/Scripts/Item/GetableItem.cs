@@ -3,7 +3,6 @@ using UnityEngine;
 public interface IGetableItem
 {
     public Item GetItem();
-    public void UseItem();
 }
 
 public class GetableItem : MonoBehaviour, IGetableItem
@@ -23,11 +22,6 @@ public class GetableItem : MonoBehaviour, IGetableItem
             _item.CanUse = true;
         else 
             _item.CanUse = false;
-    }
-
-    public virtual void UseItem()
-    {
-        Debug.Log($"{_item.name} »ç¿ë");
     }
     public Item GetItem() => _item;
 }
