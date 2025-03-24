@@ -31,6 +31,15 @@ public class Slot : MonoBehaviour
         _itemImage.sprite = newItem.ItemImage;
         _itemImage.enabled = true;
         _itemAmountTxt.text = count > 1 ? count.ToString() : "";
+
+        if (newItem.CanUse)
+        {
+            _itemUseBtn.gameObject.SetActive(true);
+        }
+        else
+        {
+            _itemUseBtn.gameObject.SetActive(false);
+        }
     }
 
     public void ClearSlot()

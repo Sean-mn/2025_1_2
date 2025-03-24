@@ -93,7 +93,6 @@ public class Inventory : MonoBehaviour
                 slot.count += amount;
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
                 onInventoryChanged?.Invoke();
-                _inventoryUI?.UpdateInventoryUI();
                 return;
             }
         }
@@ -106,7 +105,6 @@ public class Inventory : MonoBehaviour
                 _slotData[i] = new SlotData(newItem, amount);
                 _currentItemWeight += itemWeight * amount; // 총 무게 갱신
                 onInventoryChanged?.Invoke();
-                _inventoryUI?.UpdateInventoryUI();
                 return;
             }
         }

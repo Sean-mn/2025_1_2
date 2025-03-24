@@ -93,7 +93,7 @@ public class UI_Inventory : UI
 
     public void UpdateInventoryUI()
     {
-        List<SlotData> inventoryData = _inventory._slotData; // 이게 0이네???
+        List<SlotData> inventoryData = _inventory.GetInventoryData(); // 이게 0이네???
         Debug.Log(inventoryData.Count);
 
         Debug.Log("인벤토리 UI 업데이트");
