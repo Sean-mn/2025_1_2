@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum ItemType
 {
@@ -35,6 +35,6 @@ public class Item : ScriptableObject
 
     public virtual void UseItem()
     {
-
+        // 아이템 기능 구현
     }
 }

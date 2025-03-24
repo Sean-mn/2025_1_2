@@ -1,4 +1,4 @@
-public class GetableHealItem : GetableItem, IGetableItem
+public class GetableAirFuel : GetableItem
 {
     protected override void InitItem()
     {

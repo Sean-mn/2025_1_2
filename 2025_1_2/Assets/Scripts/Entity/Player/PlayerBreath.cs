@@ -59,7 +59,7 @@ public class PlayerBreath : MonoBehaviour
 
     public void HealBreath(float amount)
     {
-        _currentBreathAmount = amount;
+        _currentBreathAmount += amount;
         _breathUI?.UIFunction();
     }
 
