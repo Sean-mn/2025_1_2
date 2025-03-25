@@ -15,6 +15,6 @@ MonoBehaviour:
   _itemType: 1
   _itemMoney: 150
   _itemValue: 0
-  _itemImage: {fileID: 0}
+  _itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   _itemWeight: 30
   _canUse: 0

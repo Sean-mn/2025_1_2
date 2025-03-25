@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,9 @@ public class UI_Inventory : UI
 
     [Header("아이템 무게")]
     [SerializeField] private Text _inventoryWeightTxt;
+
+    [Header("인벤토리 다 참")]
+    [SerializeField] private Text _inventoryFulledTxt;
 
     protected override void InitUI()
     {
@@ -39,6 +43,8 @@ public class UI_Inventory : UI
         {
             Debug.LogError("인벤토리가 없습니다.");
         }
+
+        _inventoryFulledTxt?.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -92,6 +98,15 @@ public class UI_Inventory : UI
     public void UpdateInventoryWeight()
     {
         _inventoryWeightTxt.text = $"무게 : {_inventory.CurrentItemWeight}";
+    }
+
+    public IEnumerator UpdateInventoryFulled()
+    {
+        _inventoryFulledTxt.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1.2f);
+
+        _inventoryFulledTxt.gameObject.SetActive(false);
     }
 
     public void UpdateInventoryUI()

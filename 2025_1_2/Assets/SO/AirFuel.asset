@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7fa9bcb09542e46899d5e17d366485, type: 3}
   m_Name: AirFuel
   m_EditorClassIdentifier: 
+  _itemType: 0
   _itemMoney: 0
   _itemValue: 50
-  _itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _itemImage: {fileID: 21300000, guid: 84621c855a6a8404c885edd6a6a94f1e, type: 3}
   _itemWeight: 0
   _canUse: 1
