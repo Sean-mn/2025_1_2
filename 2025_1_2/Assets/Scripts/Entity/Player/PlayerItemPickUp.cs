@@ -6,8 +6,10 @@ public class PlayerItemPickUp : MonoBehaviour
     [SerializeField] private bool _canPickUp = false;
     private Camera _camera;
 
+    [Header("Reference")]
     [SerializeField] private Inventory _inventory;
     [SerializeField] private UI_ItemPickUp _itemPickUpUI;
+    [SerializeField] private UI_SellTreasure _sellTreasureUI;
 
     private void Awake()
     {
@@ -37,6 +39,10 @@ public class PlayerItemPickUp : MonoBehaviour
                 Debug.Log($"æ∆¿Ã≈€ »πµÊ: {item.GetItem().name}");
                 Destroy(hit.collider.gameObject);
             }
+        }
+        else if (Physics.Raycast(ray, out hit, _getDistance, Define.Layers.OUT) && _inventory.isInventoryFull)
+        {
+            _sellTreasureUI?.UIFunction();
         }
         else
         {

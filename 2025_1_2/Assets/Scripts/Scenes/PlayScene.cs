@@ -1,18 +1,15 @@
-using UnityEngine;
-
 public class PlayScene : BaseScene
 {
-    [SerializeField] private Timers _timer;
-
     protected override void InitScene()
     {
         _sceneType = Define.Scene.Play;
 
         Managers.Util.LockCursor();
+        Timers.Instance.StartTimer();
     }
 
     public override void ClearScene()
     {
-
+        Timers.Instance.StopTimer();
     }
 }

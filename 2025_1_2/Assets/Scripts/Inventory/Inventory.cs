@@ -149,4 +149,18 @@ public class Inventory : MonoBehaviour
 
         Debug.Log("제거할 아이템 X.");
     }
+
+    public void SellAllItem()
+    {
+        foreach (var slot in slotData)
+        {
+            if (slot != null && slot.item != null)
+            {
+                if (slot.item.ItemType == ItemType.Treasure)
+                    PlayerMoney.Instance.AddMoney(slot.item.ItemMoney * slot.count);
+
+                RemoveItem(slot.item, slot.count);
+            }
+        }
+    }
 }

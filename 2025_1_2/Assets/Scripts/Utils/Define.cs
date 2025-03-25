@@ -19,6 +19,7 @@ public class Define
     public static class Layers
     {
         public static readonly LayerMask ITEM = 1 << 6;
+        public static readonly LayerMask OUT = 1 << 7;
     }
 
     public enum Scene

@@ -6,7 +6,7 @@ public abstract class BaseScene : MonoBehaviour
     [SerializeField] protected Define.Scene _sceneType;
     public Define.Scene SceneType => _sceneType;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         InitScene();
     }
